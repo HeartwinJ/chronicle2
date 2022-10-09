@@ -3,8 +3,12 @@ export const useAuthStore = defineStore("auth", {
     isAuthenticated: false,
   }),
   actions: {
-    authenticate({ username, password }) {
-      if (username === "heartwin" && password === "123123") {
+    async authenticate({ username, password }) {
+      const res = await $fetch("/api/auth", {
+        method: "post",
+        body: { username, password },
+      });
+      if (res.success) {
         this.isAuthenticated = true;
         return true;
       }

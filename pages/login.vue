@@ -14,11 +14,8 @@ if (auth.isAuthenticated) {
 }
 
 async function handleSubmit() {
-  console.log(
-    `Username: ${formData.username} | Password: ${formData.password}`
-  );
-  if (auth.authenticate(formData)) {
-    await navigateTo("/app");
+  if (await auth.authenticate(formData)) {
+    navigateTo("/app");
   }
   formData.username = "";
   formData.password = "";
@@ -38,7 +35,7 @@ async function handleSubmit() {
         />
       </div>
       <div class="pt-16">
-        <div class="space-y-2 text-gray-200">
+        <form class="text-gray-200" @submit.prevent="handleSubmit">
           <div
             class="rounded-md border border-gray-400/25 px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-gray-400 bg-gray-400/10"
           >
@@ -54,7 +51,7 @@ async function handleSubmit() {
             />
           </div>
           <div
-            class="rounded-md border border-gray-400/25 px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-gray-400 bg-gray-400/10"
+            class="mt-2 rounded-md border border-gray-400/25 px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-gray-400 bg-gray-400/10"
           >
             <label for="password" class="block text-xs font-medium"
               >Password</label
@@ -67,15 +64,15 @@ async function handleSubmit() {
               v-model="formData.password"
             />
           </div>
-        </div>
-        <div class="mt-6 flex justify-center">
-          <button
-            class="py-2 px-6 bg-gray-400/30 rounded-lg text-gray-300 uppercase hover:bg-gray-400/40"
-            @click="handleSubmit"
-          >
-            Unlock
-          </button>
-        </div>
+          <div class="mt-12 flex justify-center">
+            <button
+              type="submit"
+              class="py-2 px-6 bg-gray-400/30 rounded-lg text-gray-300 uppercase hover:bg-gray-400/40"
+            >
+              Unlock
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
