@@ -1,13 +1,25 @@
 <script setup lang="ts">
+import { useAuthStore } from "~~/stores/authStore";
+
+definePageMeta({ layout: "login" });
+
+const auth = useAuthStore();
 const formData = reactive({
   username: "",
   password: "",
 });
 
-function handleSubmit() {
+if (auth.isAuthenticated) {
+  navigateTo("/app");
+}
+
+async function handleSubmit() {
   console.log(
     `Username: ${formData.username} | Password: ${formData.password}`
   );
+  if (auth.authenticate(formData)) {
+    await navigateTo("/app");
+  }
   formData.username = "";
   formData.password = "";
 }
@@ -67,5 +79,4 @@ function handleSubmit() {
       </div>
     </div>
   </div>
-  <AnimatedBG />
 </template>
