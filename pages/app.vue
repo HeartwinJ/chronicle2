@@ -5,9 +5,9 @@ definePageMeta({
 </script>
 
 <template>
-  <div
-    class="absolute inset-0 bg-gradient-to-br from-slate-900 via-black to-gray-900"
-  >
-    <Header />
+  <div>
+    <div class="flex justify-start px-8">
+      <button class="px-4 py-2 border rounded-lg">New Entry</button>
+    </div>
   </div>
 </template>

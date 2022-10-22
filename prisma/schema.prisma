@@ -7,16 +7,39 @@ datasource db {
   url      = env("MONGODB_URI")
 }
 
-model posts {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+model User {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  username   String     @unique
+  password   String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  categories Category[]
+  entries    Entry[]
+
+  @@map("users")
 }
 
-model users {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  categories String[]
-  createdAt  DateTime @db.Date
-  name       String
-  password   String
-  updatedAt  DateTime @db.Date
-  username   String
+model Category {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  label     String
+  color     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("categories")
+}
+
+model Entry {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id])
+
+  @@map("entries")
 }
