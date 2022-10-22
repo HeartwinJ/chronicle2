@@ -28,18 +28,21 @@ model Category {
   updatedAt DateTime @updatedAt
   userId    String   @db.ObjectId
   user      User     @relation(fields: [userId], references: [id])
+  entries   Entry[]
 
   @@map("categories")
 }
 
 model Entry {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  authorId  String   @db.ObjectId
-  author    User     @relation(fields: [authorId], references: [id])
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  category   Category @relation(fields: [categoryId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id])
+  categoryId String   @db.ObjectId
+  authorId   String   @db.ObjectId
 
   @@map("entries")
 }
