@@ -11,7 +11,8 @@ const searchQuery = ref("");
   >
     <SearchIcon />
     <input
-      class="rounded-lg border-0 bg-transparent px-4 py-2 text-white outline-none"
+      class="rounded-lg border-0 bg-transparent px-4 py-2 text-white outline-none placeholder:text-slate-500"
+      placeholder="Search"
       v-model="searchQuery"
     />
     <button class="outline-none" @click="searchQuery = ''" v-if="searchQuery">

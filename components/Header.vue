@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PowerIcon, PlusIcon } from "vue-tabler-icons";
+import { PowerIcon, PlusIcon, SettingsIcon } from "vue-tabler-icons";
 import { useAuthStore } from "~~/stores/authStore";
 
 const props = defineProps({
@@ -16,6 +16,8 @@ const props = defineProps({
 const auth = useAuthStore();
 
 function newEntry() {}
+
+function goToSettings() {}
 
 function logout() {
   auth.logout();
@@ -36,6 +38,12 @@ function logout() {
         v-if="props.showNew"
       >
         <PlusIcon />
+      </button>
+      <button
+        class="rounded-lg py-2 px-4 hover:bg-blue-600/30 hover:text-blue-400"
+        @click="goToSettings"
+      >
+        <SettingsIcon />
       </button>
       <button
         class="rounded-lg py-2 px-4 hover:bg-red-600/30 hover:text-red-400"

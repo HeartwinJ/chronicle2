@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
       title: body.title,
       content: body.content,
       authorId: event.context.params.id,
+      categoryId: body.categoryId,
     },
   });
   if (entry) {
