@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "~~/stores/authStore";
 import { useDataStore } from "~~/stores/dataStore";
-
-definePageMeta({
-  middleware: "auth",
-});
 
 const appData = useDataStore();
 const auth = useAuthStore();

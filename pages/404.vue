@@ -1,5 +1,5 @@
 <script setup lang="ts">
-navigateTo("/login");
+await navigateTo("/login");
 </script>
 
 <template>

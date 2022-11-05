@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { SearchIcon, CircleXIcon } from "vue-tabler-icons";
 
 const searchQuery = ref("");

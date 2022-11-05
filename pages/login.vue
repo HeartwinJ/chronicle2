@@ -4,23 +4,28 @@ import { useAuthStore } from "~~/stores/authStore";
 definePageMeta({ layout: "login" });
 
 const auth = useAuthStore();
+
 const formData = reactive({
   username: "",
   password: "",
 });
+const isProcessing = ref(false);
 
-if (auth.isAuthenticated) {
-  navigateTo("/");
+if (auth.isAuthenticated()) {
+  await navigateTo("/");
 }
 
 async function handleSubmit() {
-  if (await auth.authenticate(formData)) {
-    navigateTo("/");
+  isProcessing.value = true;
+  const success = await auth.authenticate(formData);
+  if (success) {
+    await navigateTo("/");
   } else {
     console.warn("Invalid credentials");
   }
   formData.username = "";
   formData.password = "";
+  isProcessing.value = false;
 }
 </script>
 
@@ -36,7 +41,7 @@ async function handleSubmit() {
           class="h-24 w-24 animate-pulse"
         />
       </div>
-      <div class="pt-16">
+      <div class="pt-16" v-if="!isProcessing">
         <form class="text-gray-200" @submit.prevent="handleSubmit">
           <div
             class="rounded-md border border-gray-400/25 bg-gray-400/10 px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-gray-400"

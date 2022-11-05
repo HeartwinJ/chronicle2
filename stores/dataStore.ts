@@ -21,8 +21,6 @@ interface Category {
 
 export const useDataStore = defineStore("data", {
   state: () => ({
-    categories: [],
-    entries: [],
     entriesList: [],
   }),
   getters: {
@@ -48,12 +46,6 @@ export const useDataStore = defineStore("data", {
     },
   },
   actions: {
-    setCategories(_categories) {
-      this.categories = [..._categories];
-    },
-    setEntries(_entries) {
-      this.entries = [..._entries];
-    },
     async getEntriesList() {
       const auth = useAuthStore();
       const res = await $fetch(`/api/query/${auth.user.id}/entries`);

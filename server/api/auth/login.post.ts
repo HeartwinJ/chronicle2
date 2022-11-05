@@ -6,11 +6,7 @@ const client = new prisma.PrismaClient({});
 export default defineEventHandler(async (event) => {
   const body = await useBody(event);
   const user = await client.user.findUnique({
-    where: { username: body.username },
-    include: {
-      categories: true,
-      entries: true,
-    },
+    where: { username: body.username }
   });
   if (user) {
     const validPass = await bcrypt.compare(body.password, user.password);
@@ -19,8 +15,6 @@ export default defineEventHandler(async (event) => {
         id: user.id,
         name: user.name,
         username: user.username,
-        categories: user.categories,
-        entries: user.entries,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       })

@@ -1,5 +1,4 @@
 import * as jose from "jose";
-import { useDataStore } from "./dataStore";
 
 interface User {
   id: string;
@@ -13,13 +12,11 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: {} as User,
   }),
-  getters: {
+  actions: {
     isAuthenticated() {
       const cookie = useCookie("chronicle-auth-token");
       return cookie && cookie.value ? true : false;
     },
-  },
-  actions: {
     setUser(_data) {
       this.user = { ..._data };
     },
@@ -41,22 +38,18 @@ export const useAuthStore = defineStore("auth", {
       }
 
       const runtimeConfig = useRuntimeConfig();
-      const appData = useDataStore();
       const { payload } = await jose.jwtVerify(
         cookie.value,
         new TextEncoder().encode(runtimeConfig.public.jwtSecret)
       );
-      const { id, name, username, createdAt, updatedAt, categories, entries } =
-        payload;
+      const { id, name, username, createdAt, updatedAt } = payload;
       this.setUser({ id, name, username, createdAt, updatedAt });
-      appData.setCategories(categories);
-      appData.setEntries(entries);
     },
-    logout() {
+    async logout() {
       const cookie = useCookie("chronicle-auth-token");
       cookie.value = null;
       this.$reset();
-      navigateTo("/login");
+      await navigateTo("/login");
     },
   },
 });
