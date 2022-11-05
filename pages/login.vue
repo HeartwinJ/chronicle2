@@ -10,12 +10,14 @@ const formData = reactive({
 });
 
 if (auth.isAuthenticated) {
-  navigateTo("/app");
+  navigateTo("/");
 }
 
 async function handleSubmit() {
   if (await auth.authenticate(formData)) {
-    navigateTo("/app");
+    navigateTo("/");
+  } else {
+    console.warn("Invalid credentials");
   }
   formData.username = "";
   formData.password = "";

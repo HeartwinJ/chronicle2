@@ -1,9 +1,14 @@
+<script setup lang="ts"></script>
+
 <template>
   <div
-    class="background-animate absolute inset-0 bg-gradient-to-br from-slate-900 via-black to-gray-900 text-white"
+    class="background-animate absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-900 via-black to-gray-900 text-white"
   >
-    <Header showNew showSearch />
-    <slot />
+    <img
+      src="~/assets/img/logo.svg"
+      alt="logo"
+      class="h-16 w-16 animate-bounce md:h-32 md:w-32"
+    />
   </div>
 </template>
 

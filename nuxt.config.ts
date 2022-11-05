@@ -9,4 +9,9 @@ export default defineNuxtConfig({
       },
     ],
   ],
+  runtimeConfig: {
+    public: {
+      jwtSecret: process.env.JWT_TOKEN_SECRET,
+    },
+  },
 });

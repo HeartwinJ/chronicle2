@@ -1,3 +1,4 @@
+import * as jose from "jose";
 import { useDataStore } from "./dataStore";
 
 interface User {
@@ -10,9 +11,14 @@ interface User {
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    isAuthenticated: false,
     user: {} as User,
   }),
+  getters: {
+    isAuthenticated() {
+      const cookie = useCookie("chronicle-auth-token");
+      return cookie && cookie.value ? true : false;
+    },
+  },
   actions: {
     setUser(_data) {
       this.user = { ..._data };
@@ -23,18 +29,33 @@ export const useAuthStore = defineStore("auth", {
         body: { username, password },
       });
       if (res.success) {
-        this.isAuthenticated = true;
-        const appData = useDataStore();
-        const { categories, entries, ...user } = res.user!;
-        this.setUser(user);
-        appData.setCategories(categories);
-        appData.setEntries(entries);
+        this.getUserData();
         return true;
       }
       return false;
     },
+    async getUserData() {
+      const cookie = useCookie("chronicle-auth-token");
+      if (!cookie || !cookie.value) {
+        return;
+      }
+
+      const runtimeConfig = useRuntimeConfig();
+      const appData = useDataStore();
+      const { payload } = await jose.jwtVerify(
+        cookie.value,
+        new TextEncoder().encode(runtimeConfig.public.jwtSecret)
+      );
+      const { id, name, username, createdAt, updatedAt, categories, entries } =
+        payload;
+      this.setUser({ id, name, username, createdAt, updatedAt });
+      appData.setCategories(categories);
+      appData.setEntries(entries);
+    },
     logout() {
-      this.isAuthenticated = false;
+      const cookie = useCookie("chronicle-auth-token");
+      cookie.value = null;
+      this.$reset();
       navigateTo("/login");
     },
   },
